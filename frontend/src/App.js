@@ -1,8 +1,16 @@
-
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
 import React, { useEffect, useState } from 'react';
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import axios from 'axios'
+
+import Header from './components/Header';
+import Home from './pages/Home';
+import Register from './pages/Register'
+import Login from './pages/Login';
+
+
+
 
 function App() {
   const [getMessage, setGetMessage] = useState({})
@@ -17,16 +25,21 @@ function App() {
 
   }, [])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>React + Flask Tutorial</p>
-        <div>{getMessage.status === 200 ? 
-          <h3>{getMessage.data.message}</h3>
-          :
-          <h3>LOADING</h3>}</div>
-      </header>
-    </div>
+    <>
+      <Router>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />}/>
+          <Route path="/login" element={<Login />}/>
+          <Route path="/register" element={<Register />}/>
+        </Routes>
+      </Router>
+      
+      <div>{getMessage.status === 200 ? 
+      <h3>{getMessage.data.message}</h3>
+      :
+      <h3>LOADING</h3>}</div>
+      </>
   );
 }
 
