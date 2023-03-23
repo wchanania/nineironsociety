@@ -24182,3 +24182,4 @@ frontend/node_modules/eslint-plugin-jsx-a11y/lib/util/implicitRoles/area.js
 frontend/node_modules/eslint-plugin-jsx-a11y/lib/util/implicitRoles/article.js
 frontend/node_modules/eslint-plugin-jsx-a11y/lib/util/implicitRoles/aside.js
 frontend/node_modules/eslint-plugin-jsx-a11y/lib/util/implicitRoles/body.js
+.DS_Store
