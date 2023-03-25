@@ -46,10 +46,11 @@ def refresh_expiring_jwts(response):
         return response
 
 @api.route('/profile')
-def my_profile():
+@jwt_required() #makes auth required
+def my_dashoard():
     response_body = {
-        "name": "Nagato",
-        "about" :"Hello! I'm a full stack developer that loves python and javascript"
+        "first_Name": "King",
+        "last_Name" :"Kong"
     }
 
     return response_body
