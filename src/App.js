@@ -1,52 +1,30 @@
-// import logo from './logo.svg';
-import './App.css';
 import React, { useEffect, useState } from 'react';
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import axios from 'axios'
-
-import Header from './components/Header';
-import Home from './pages/Home';
-import Register from './pages/Register'
-import Login from './pages/Login';
-import Me from './pages/Me';
-
-
-
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import Login from './components/Login'
+import Profile from './components/Profile'
+import Header from './components/Header'
+import useToken from './components/useToken'
+import './App.css'
 
 function App() {
+  const { token, removeToken, setToken } = useToken();
 
-   // new line start
-  const [getMessage, setProfileData] = useState(null)
-
-  function getData() {
-    axios({
-      method: "GET",
-      url:"/profile",
-    })
-    .then((response) => {
-      const res =response.data
-      setProfileData(({
-        profile_name: res.name,
-        about_me: res.about}))
-    }).catch((error) => {
-      if (error.response) {
-        console.log(error.response)
-        console.log(error.response.status)
-        console.log(error.response.headers)
-        }
-    })}
   return (
-    <>
-      <Router>
-        <Header />
-        <Routes>
-          <Route path="/" element={<Home />}/>
-          <Route path="/login" element={<Login />}/>
-          <Route path="/register" element={<Register />}/>
-          <Route path="/me" element={<Me />}/>
-        </Routes>
-      </Router>
-      </>
+    <BrowserRouter>
+      <div className="App">
+        <Header token={removeToken}/>
+        {!token && token!=="" &&token!== undefined?  
+        <Login setToken={setToken} />
+        :(
+          <>
+            <Routes>
+              <Route exact path="/profile" element={<Profile token={token} setToken={setToken}/>}></Route>
+            </Routes>
+          </>
+        )}
+      </div>
+    </BrowserRouter>
   );
 }
 
