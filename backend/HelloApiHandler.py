@@ -20,7 +20,7 @@ class HelloApiHandler(Resource):
 
     request_type = args['type']
     request_json = args['message']
-    # ret_status, ret_msg = ReturnData(request_type, request_json)
+    # ret_status, ret_msg = ReturnData(request_type, request_json)f
     # currently just returning the req straight
     ret_status = request_type
     ret_msg = request_json

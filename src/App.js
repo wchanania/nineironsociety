@@ -14,17 +14,27 @@ import Me from './pages/Me';
 
 
 function App() {
-  const [getMessage, setGetMessage] = useState({})
 
-  useEffect(()=>{
-    axios.get('http://localhost:5000/flask/hello').then(response => {
-      console.log("SUCCESS", response)
-      setGetMessage(response)
-    }).catch(error => {
-      console.log(error)
+   // new line start
+  const [getMessage, setProfileData] = useState(null)
+
+  function getData() {
+    axios({
+      method: "GET",
+      url:"/profile",
     })
-
-  }, [])
+    .then((response) => {
+      const res =response.data
+      setProfileData(({
+        profile_name: res.name,
+        about_me: res.about}))
+    }).catch((error) => {
+      if (error.response) {
+        console.log(error.response)
+        console.log(error.response.status)
+        console.log(error.response.headers)
+        }
+    })}
   return (
     <>
       <Router>
@@ -36,11 +46,6 @@ function App() {
           <Route path="/me" element={<Me />}/>
         </Routes>
       </Router>
-      
-      <div>{getMessage.status === 200 ? 
-      <h3>{getMessage.data.message}</h3>
-      :
-      <h3>LOADING</h3>}</div>
       </>
   );
 }
