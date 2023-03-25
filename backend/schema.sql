@@ -1,0 +1,11 @@
+DROP TABLE IF EXISTS users;
+
+CREATE TABLE users (
+  user_id TEXT PRIMARY KEY,
+  first_name TEXT UNIQUE NOT NULL,
+  last_name TEXT UNIQUE NOT NULL,
+  email TEXT UNIQUE NOT NULL,
+  password TEXT NOT NULL,
+  city TEXT NOT NULL,
+  state TEXT NOT NULL
+);
