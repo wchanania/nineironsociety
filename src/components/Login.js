@@ -1,9 +1,9 @@
 import axios from "axios";
 import React, { useEffect, useState } from 'react';
-import Header from './Header'
+import {useNavigate} from 'react-router-dom'
 
 function Login(props) {
-
+    let navigate = useNavigate();
     const [loginForm, setloginForm] = useState({
       email: "",
       password: ""
@@ -20,6 +20,8 @@ function Login(props) {
       })
       .then((response) => {
         props.setToken(response.data.access_token)
+        localStorage.setItem('user_id', response.data.user_id)
+        navigate("/profile")
       }).catch((error) => {
         if (error.response) {
           console.log(error.response)

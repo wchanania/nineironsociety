@@ -2,24 +2,28 @@ import axios from "axios";
 import React, { useEffect, useState } from 'react';
 
 function Profile(props) {
-
-  const [profileData, setProfileData] = useState(null)
+  const [UserId, setUserId] = useState({id: ""})
   function getData() {
+    const storageid = localStorage.getItem('user_id')
+    setUserId({id: storageid})
     axios({
-      method: "GET",
-      url:"/profile",
-      headers: {
-        Authorization: 'Bearer ' + props.token
+      method: 'GET',
+      maxBodyLength: Infinity,
+      url: '/profile',
+      params: {
+        'user_id': UserId.id
+      },
+      headers: { 
+        'Authorization': 'Bearer ' + props.token,
+        'Access-Control-Allow-Origin': '*'
       }
     })
     .then((response) => {
-      const res =response.data
-      res.access_token && props.setToken(res.access_token)
-      setProfileData(({
-        profile_name: res.name,
-        about_me: res.about}))
+      
+      console.log(response.data)
     }).catch((error) => {
       if (error.response) {
+        console.log(error)
         console.log(error.response)
         console.log(error.response.status)
         console.log(error.response.headers)
@@ -30,9 +34,8 @@ function Profile(props) {
     <div className="Profile">
 
         <p>To get your profile details: </p><button onClick={getData}>Click me</button>
-        {profileData && <div>
-              <p>Profile name: {profileData.profile_name}</p>
-              <p>About me: {profileData.about_me}</p>
+        {<div>
+              <p>ID: {UserId.id}</p>
             </div>
         }
 

@@ -45,7 +45,7 @@ api.secret_key = 'febddbfe0b0945d1936eb8b78b2e7652'
 api.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
 jwt = JWTManager(api)
 
-@api.route('/register_user',methods = ['POST', 'GET'])
+@api.route('/register_user',methods = ['POST'])
 def register_user():
     if request.method == 'POST':
         try:
@@ -92,7 +92,8 @@ def authenticate():
             response = {"msg": "Wrong username or password"}, 401
         if response is None:
             access_token = create_access_token(identity=email)
-            response = {"access_token":access_token}
+            response = {"access_token":access_token,
+                        "user_id":user['user_id']}
             print('Access token granted')
     return response
         
@@ -113,18 +114,23 @@ def refresh_expiring_jwts(response):
         # Case where there is not a valid JWT. Just return the original respone
         return response
 
-@api.route('/profile')
-@jwt_required() #makes auth required
-def my_dashoard():
-    response_body = {
-        "first_Name": "King",
-        "last_Name" :"Kong"
-    }
-
-    return response_body
-
-
-
+@api.route('/profile', methods=['GET'])
+#@jwt_required() #makes auth required
+def profile():
+    print('true0')
+    if request.method == 'GET':
+        db = get_db()
+        response = None
+        user_id = request.args.get("user_id")
+        user = db.execute(
+            'SELECT * FROM users WHERE user_id = ?', (user_id,)
+        ).fetchone()
+        if user is None:
+            print('User is None')
+            response = {"msg": "Could not fetch user data"}, 422
+        if response is None:
+            response = {"user_info":dict(user)}, 200
+        return jsonify(response)
 
 
 
