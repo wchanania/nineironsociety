@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Link } from "react-router-dom"
 import Header from './Header'
 
+
 function Register(props) {
 
     const [registrationForm, setregistrationForm] = useState({
@@ -10,8 +11,7 @@ function Register(props) {
       last_name: "",
       email: "",
       password: "",
-      city: "",
-      state: ""
+      zipcode: "",
     })
 
     function registerUser(event) {
@@ -23,8 +23,7 @@ function Register(props) {
             last_name: registrationForm.last_name,
             email: registrationForm.email,
             password: registrationForm.password,
-            city: registrationForm.city,
-            state: registrationForm.state
+            zipcode: registrationForm.zipcode
          }
       })
       .then((response) => {
@@ -72,6 +71,12 @@ function Register(props) {
                   placeholder="Last Name" 
                   value={registrationForm.last_name} />
             <input onChange={handleChange} 
+                  type="zipcode"
+                  text={registrationForm.zipcode} 
+                  name="zipcode" 
+                  placeholder="zipcode" 
+                  value={registrationForm.zipcode} />
+            <input onChange={handleChange} 
                   type="email"
                   text={registrationForm.email} 
                   name="email" 
@@ -83,18 +88,6 @@ function Register(props) {
                   name="password" 
                   placeholder="Password" 
                   value={registrationForm.password} />
-            <input onChange={handleChange} 
-                  type="city"
-                  text={registrationForm.city} 
-                  name="city" 
-                  placeholder="City" 
-                  value={registrationForm.city} />
-            <input onChange={handleChange} 
-                  type="state"
-                  text={registrationForm.state} 
-                  name="state" 
-                  placeholder="State" 
-                  value={registrationForm.state} />
           <button onClick={registerUser}>Submit</button>
         </form>
       </div>

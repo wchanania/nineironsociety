@@ -53,12 +53,11 @@ def register_user():
             last_name = request.json.get("last_name",None)
             email = request.json.get("email",None)
             password = request.json.get("password",None)
-            city = request.json.get("city",None)
-            state = request.json.get("state",None)
+            zipcode = request.json.get("zipcode",None)
             db = get_db()
             with sqlite3.connect("database.sqlite") as con:
                 cur = con.cursor()
-                cur.execute("INSERT INTO users (user_id, first_name,last_name,email,password,city,state) VALUES (?,?,?,?,?,?,?)",(str(uuid.uuid1()),first_name,last_name,email,generate_password_hash(password),city,state))  
+                cur.execute("INSERT INTO users (user_id,first_name,last_name,email,password,zipcode) VALUES (?,?,?,?,?,?)",(str(uuid.uuid1()),first_name,last_name,email,generate_password_hash(password), zipcode))  
                 con.commit()
                 msg = "Record successfully added"
         except db.IntegrityError:
@@ -69,10 +68,11 @@ def register_user():
             return jsonify({'msg':msg})
 
 @api.route("/logout", methods=["POST"])
+@jwt_required()
 def logout():
-    response = jsonify({"msg": "logout successful"})
+    response = jsonify({"msg": "Logout Successful"})
     unset_jwt_cookies(response)
-    return response
+    return response, 200
 
 @api.route('/authenticate', methods=["POST"])
 def authenticate():
@@ -88,8 +88,6 @@ def authenticate():
             print('User is None')
             response = {"msg": "Wrong username or password"}, 401
         elif not check_password_hash(user['password'], password):
-            print(user['password'])
-            print(password)
             print('Pass Does not match')
             response = {"msg": "Wrong username or password"}, 401
         if response is None:

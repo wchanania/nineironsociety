@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 function useToken() {
-
   function getToken() {
     const userToken = localStorage.getItem('NineIronToken');
     return userToken && userToken
@@ -15,6 +14,7 @@ function useToken() {
   };
 
   function removeToken() {
+    console.log('trying to remove')
     localStorage.removeItem("NineIronToken");
     setToken(null);
   }

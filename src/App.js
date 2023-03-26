@@ -13,14 +13,17 @@ function App() {
   return (
     <BrowserRouter>
       <div className="App">
-        <Header token={removeToken}/>
+        <Header/>
         <Routes>
           <Route exact path="/register" element={<Register />}/>
-          {!token && token!=="" &&token!== undefined?  
+          {console.log(token)}
+          {token =="" && token == undefined?  
             <Route exact path="/login" element={<Login setToken={setToken}/>}/>
-          :(
+            
+          :(<>
             <Route exact path="/profile" element={<Profile token={token} setToken={setToken}/>}/>
-        )}
+            </>
+          )}
       </Routes>
       </div>
     </BrowserRouter>
