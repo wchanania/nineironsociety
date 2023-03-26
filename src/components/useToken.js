@@ -14,9 +14,8 @@ function useToken() {
   };
 
   function removeToken() {
-    console.log('trying to remove')
     localStorage.removeItem("NineIronToken");
-    setToken(null);
+    localStorage.removeItem("user_id");
   }
 
   return {
