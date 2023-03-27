@@ -6,7 +6,7 @@ import click
 from flask import Flask, request, jsonify, session, current_app, g
 from datetime import datetime, timedelta, timezone
 from werkzeug.security import check_password_hash, generate_password_hash
-from flask_jwt_extended import create_access_token,get_jwt,get_jwt_identity, \
+from flask_jwt_extended import create_access_token,get_jwt,verify_jwt_in_request,get_jwt_identity, \
                                unset_jwt_cookies, jwt_required, JWTManager
 
 def get_db():
@@ -115,10 +115,12 @@ def refresh_expiring_jwts(response):
         return response
 
 @api.route('/profile', methods=['GET'])
-#@jwt_required() #makes auth required
 def profile():
-    print('true0')
     if request.method == 'GET':
+        try:
+            verify_jwt_in_request()
+        except:
+            return jsonify({"msg":"Missing Auth Token"}), 401
         db = get_db()
         response = None
         user_id = request.args.get("user_id")
@@ -126,7 +128,6 @@ def profile():
             'SELECT * FROM users WHERE user_id = ?', (user_id,)
         ).fetchone()
         if user is None:
-            print('User is None')
             response = {"msg": "Could not fetch user data"}, 422
         if response is None:
             response = {"user_info":dict(user)}, 200
