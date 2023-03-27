@@ -39,8 +39,7 @@ function Register(props) {
         last_name: "",
         email: "",
         password: "",
-        city: "",
-        state: ""
+        zipcode: ""
         }))
 
       event.preventDefault()
